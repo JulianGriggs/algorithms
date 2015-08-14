@@ -74,6 +74,9 @@ class BinarySearchTree:
 		return self._size(self.root)
 
 	def is_empty(self):
+		'''
+		Returns True if the BST is empty, False otherwise
+		'''
 		return self.size() == 0
 
 	def _get(self, key, node):
@@ -94,6 +97,9 @@ class BinarySearchTree:
 		return self._get(key, self.root)
 
 	def contains(self, key):
+		'''
+		Returns True if the BST contains 'key', False otherwise
+		'''
 		return self.get(key) != None
 
 	def _put(self, key, val, node):
@@ -332,7 +338,6 @@ class BinarySearchTree:
 		self.root = self._delete_max(self.root)
 
 	def _keys(self, node, keys):
-
 		if node == None:
 			return keys
 
