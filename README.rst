@@ -55,6 +55,7 @@ Algorithms implemented so far:
 **Random:**
 
 - Mersenne Twister
+- Minimum edit distance
 
 
 Installation:
