@@ -1,5 +1,5 @@
 import unittest
-from ..random import mersenne_twister
+from ..random import mersenne_twister, minimum_edit_distance as med
 
 
 class TestMersenneTwister(unittest.TestCase):
@@ -51,3 +51,58 @@ class TestMersenneTwister(unittest.TestCase):
         for i in range(10):
             self.results.append(mt.randint())
         self.assertEqual(self.expected, self.results)
+
+
+class TestMinimumEditDistance(unittest.TestCase):
+    '''
+    Tests finding the minimum edit distance between two strings.
+    '''
+    def apply(self, test_cases):
+        for test in test_cases:
+            self.assertEqual(med.min_edit_distance(test[0], test[1]), test[2])
+
+
+    def test_empty_strings(self):
+        test_cases = [("", "", 0),
+                      ("a", "", 1),
+                      ("", "a", 1),
+                      ("abc", "", 3),
+                      ("", "abc", 3)]
+        self.apply(test_cases)
+
+    def test_equal_strings(self):
+        test_cases = [("", "", 0),
+                      ("a", "a", 0),
+                      ("abc", "abc", 0)]
+        self.apply(test_cases)
+
+    def test_when_only_inserts_are_needed(self):
+        test_cases = [("", "a", 1),
+                      ("a", "ab", 1),
+                      ("b", "ab", 1),
+                      ("ac", "abc", 1),
+                      ("abcdefg", "xabxcdxxefxgx", 6)]
+        self.apply(test_cases)
+ 
+    def test_when_only_deletes_are_needed(self):
+        test_cases = [("a", "", 1),
+                      ("ab", "a", 1),
+                      ("ab", "b", 1),
+                      ("abc", "ac", 1),
+                      ("xabxcdxxefxgx", "abcdefg", 6)]
+        self.apply(test_cases)
+
+    def test_when_only_substitutions_are_needed(self):
+        test_cases = [("a", "b", 2),
+                      ("ab", "ac", 2),
+                      ("ac", "ab", 2),
+                      ("abc", "axc", 2),
+                      ("xabxcdxxefxgx", "1ab2cd34ef5g6", 12)]
+        self.apply(test_cases)
+ 
+    def test_when_many_operations_are_needed(self):
+        test_cases = [("intention", "execution", 8),
+                      ("intention", "executio", 9),
+                      ("intention", "xecutio", 8)]
+
+        self.apply(test_cases)
